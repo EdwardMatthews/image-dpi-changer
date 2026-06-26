@@ -1,0 +1,12 @@
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@swc/core'
+  - esbuild
+  - msw
+  - sharp
+  - workerd
+allowBuilds:
+  esbuild: true
+  msw: true
+  sharp: true
+  workerd: true

@@ -23,10 +23,14 @@ export interface NavLink {
 /** Off-site URLs render as plain <a>; internal paths use the locale-aware Link. */
 const isExternalHref = (href: string) => /^https?:\/\//.test(href);
 
-export function SiteHeader({ navLinks }: { navLinks?: NavLink[] }) {
+export function SiteHeader({
+  navLinks,
+  showAuthActions = true,
+}: {
+  navLinks?: NavLink[];
+  showAuthActions?: boolean;
+}) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { data: session } = useSession();
-  const user = session?.user;
 
   return (
     <header className="bg-background/80 sticky top-0 z-50 w-full backdrop-blur-sm">
@@ -68,14 +72,10 @@ export function SiteHeader({ navLinks }: { navLinks?: NavLink[] }) {
         <div className="hidden items-center gap-3 md:flex">
           <LocaleSelector />
           <ThemeToggle />
-          {user ? (
-            <SiteUserMenu
-              name={user.name || 'User'}
-              email={user.email}
-              image={user.image}
-            />
+          {showAuthActions ? (
+            <HeaderAuthActions />
           ) : (
-            <Link href="/settings" className={cn(buttonVariants(), 'gap-1.5')}>
+            <Link href="/#tool" className={cn(buttonVariants(), 'gap-1.5')}>
               {m['common.nav.get_started']()}
               <ArrowRight className="size-4" />
             </Link>
@@ -126,15 +126,11 @@ export function SiteHeader({ navLinks }: { navLinks?: NavLink[] }) {
             <LocaleSelector />
             <ThemeToggle />
             <div className="flex-1" />
-            {user ? (
-              <SiteUserMenu
-                name={user.name || 'User'}
-                email={user.email}
-                image={user.image}
-              />
+            {showAuthActions ? (
+              <HeaderAuthActions />
             ) : (
               <Link
-                href="/settings"
+                href="/#tool"
                 className={cn(buttonVariants(), 'gap-1.5')}
                 onClick={() => setMobileOpen(false)}
               >
@@ -145,5 +141,23 @@ export function SiteHeader({ navLinks }: { navLinks?: NavLink[] }) {
         </div>
       )}
     </header>
+  );
+}
+
+function HeaderAuthActions() {
+  const { data: session } = useSession();
+  const user = session?.user;
+
+  return user ? (
+    <SiteUserMenu
+      name={user.name || 'User'}
+      email={user.email}
+      image={user.image}
+    />
+  ) : (
+    <Link href="/settings" className={cn(buttonVariants(), 'gap-1.5')}>
+      {m['common.nav.get_started']()}
+      <ArrowRight className="size-4" />
+    </Link>
   );
 }

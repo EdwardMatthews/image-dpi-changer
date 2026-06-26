@@ -3,10 +3,10 @@ import { SiteHeader } from '@/components/site-header';
 
 export function Header() {
   const navLinks = [
-    { href: '/#features', label: m['landing.nav.features']() },
-    { href: '/pricing', label: m['landing.nav.pricing']() },
-    { href: '/blog', label: m['landing.nav.blog']() },
+    { href: '/#tool', label: m['landing.nav.tool']() },
+    { href: '/#how-it-works', label: m['landing.nav.how_it_works']() },
+    { href: '/#faq', label: m['landing.nav.faq']() },
   ];
 
-  return <SiteHeader navLinks={navLinks} />;
+  return <SiteHeader navLinks={navLinks} showAuthActions={false} />;
 }
